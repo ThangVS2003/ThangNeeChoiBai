@@ -66,34 +66,50 @@ h2 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    background: #ffffff;
     padding: 14px 16px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    border: 1px solid #edf2f7;
 }
 
 .input-group label {
     font-size: 16px;
-    font-weight: 600;
-    color: #4a5568;
+    font-weight: 700;
 }
+
+#input-form .input-group:nth-child(1) { border-left: 5px solid #4299e1; background: #ebf8ff; border-top: 1px solid #bee3f8; border-right: 1px solid #bee3f8; border-bottom: 1px solid #bee3f8; }
+#input-form .input-group:nth-child(1) label { color: #2b6cb0; }
+
+#input-form .input-group:nth-child(2) { border-left: 5px solid #ed64a6; background: #fdf2f8; border-top: 1px solid #fbb6ce; border-right: 1px solid #fbb6ce; border-bottom: 1px solid #fbb6ce; }
+#input-form .input-group:nth-child(2) label { color: #b83280; }
+
+#input-form .input-group:nth-child(3) { border-left: 5px solid #48bb78; background: #f0fff4; border-top: 1px solid #9ae6b4; border-right: 1px solid #9ae6b4; border-bottom: 1px solid #9ae6b4; }
+#input-form .input-group:nth-child(3) label { color: #2f855a; }
+
+#input-form .input-group:nth-child(4) { border-left: 5px solid #ed8936; background: #fffaf0; border-top: 1px solid #fbd38d; border-right: 1px solid #fbd38d; border-bottom: 1px solid #fbd38d; }
+#input-form .input-group:nth-child(4) label { color: #c05621; }
+
+#input-form .input-group:nth-child(5) { border-left: 5px solid #9f7aea; background: #faf5ff; border-top: 1px solid #d6bcfa; border-right: 1px solid #d6bcfa; border-bottom: 1px solid #d6bcfa; }
+#input-form .input-group:nth-child(5) label { color: #6b46c1; }
 
 .stepper {
     display: flex;
     align-items: center;
-    background: #f7fafc;
+    justify-content: space-between;
+    background: #ffffff;
     border-radius: 8px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #cbd5e0;
+    width: 130px;
+    height: 42px;
     overflow: hidden;
 }
 
 .btn-step {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 100%;
     background: #edf2f7;
     border: none;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: bold;
     color: #4a5568;
     cursor: pointer;
     display: flex;
@@ -107,8 +123,8 @@ h2 {
 }
 
 .stepper input {
-    width: 50px;
-    height: 40px;
+    width: 46px;
+    height: 100%;
     font-size: 16px;
     font-weight: 700;
     border: none;
@@ -116,6 +132,14 @@ h2 {
     text-align: center;
     color: #2d3748;
     outline: none;
+    padding: 0;
+    -moz-appearance: textfield;
+}
+
+.stepper input::-webkit-outer-spin-button,
+.stepper input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 button {
@@ -126,7 +150,7 @@ button {
     border-radius: 12px;
     cursor: pointer;
     font-weight: 600;
-    margin-top: 12px;
+    margin-top: 0px;
     transition: transform 0.1s, box-shadow 0.2s;
 }
 
