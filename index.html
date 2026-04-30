@@ -11,6 +11,7 @@
         <button class="tab-btn active" onclick="switchTab('input-page', this)">Nhập Điểm</button>
         <button class="tab-btn" onclick="switchTab('result-page', this)">Kết Quả</button>
         <button class="tab-btn" onclick="switchTab('history-page', this)">Lịch Sử</button>
+        <button class="tab-btn" onclick="switchTab('settings-page', this)">Cài Đặt</button>
     </div>
 
     <div id="input-page" class="page active">
@@ -23,6 +24,10 @@
 
     <div id="result-page" class="page">
         <h2>Tổng Điểm</h2>
+        <div class="sort-controls">
+            <button class="btn-sort" onclick="updateResults('asc')">Tăng dần</button>
+            <button class="btn-sort" onclick="updateResults('desc')">Giảm dần</button>
+        </div>
         <div id="result-list"></div>
     </div>
 
@@ -39,6 +44,12 @@
             </table>
         </div>
         <button class="btn-clear" onclick="clearAllData()">Xóa Toàn Bộ Dữ Liệu</button>
+    </div>
+
+    <div id="settings-page" class="page">
+        <h2>Đổi Tên Người Chơi</h2>
+        <div id="settings-form"></div>
+        <button class="btn-submit" onclick="savePlayers()">Lưu Tên Mới</button>
     </div>
 
     <script src="script.js"></script>

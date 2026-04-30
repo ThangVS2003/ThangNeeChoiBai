@@ -27,7 +27,7 @@ body {
     background: none;
     border: none;
     color: #a0aec0;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -181,6 +181,41 @@ button:active {
 .btn-clear:active {
     background-color: #fff5f5;
     transform: scale(0.98);
+}
+
+.sort-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn-sort {
+    flex: 1;
+    margin-top: 0;
+    background-color: #edf2f7;
+    color: #4a5568;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.settings-group {
+    margin-bottom: 16px;
+}
+
+.settings-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #cbd5e0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.settings-group input:focus {
+    border-color: #4f46e5;
 }
 
 #error-msg {

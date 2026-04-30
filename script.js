@@ -1,9 +1,10 @@
-const players = ["Thắng", "Thùy", "Hiệp", "Kiên", "Hồng"];
+let players = JSON.parse(localStorage.getItem('gamePlayers')) || ["Thắng", "Thùy", "Hiệp", "Kiên", "Hồng"];
 let roundsHistory = JSON.parse(localStorage.getItem('gameScores')) || [];
 
 function init() {
     renderInputForm();
     renderHistoryHeader();
+    renderSettingsForm();
     updateResults();
     updateHistoryTable();
 }
@@ -44,6 +45,47 @@ function renderHistoryHeader() {
     });
 }
 
+function renderSettingsForm() {
+    const container = document.getElementById("settings-form");
+    container.innerHTML = "";
+    players.forEach((player, index) => {
+        const div = document.createElement("div");
+        div.className = "settings-group";
+        div.innerHTML = `<input type="text" id="player-name-${index}" value="${player}" placeholder="Nhập tên người chơi ${index + 1}">`;
+        container.appendChild(div);
+    });
+}
+
+function savePlayers() {
+    const newPlayers = [];
+    for (let i = 0; i < players.length; i++) {
+        const inputEl = document.getElementById(`player-name-${i}`);
+        let val = inputEl.value.trim();
+        if (val === "") val = players[i];
+        newPlayers.push(val);
+    }
+
+    const newHistory = roundsHistory.map(round => {
+        const newRound = {};
+        for (let i = 0; i < players.length; i++) {
+            newRound[newPlayers[i]] = round[players[i]] || 0;
+        }
+        return newRound;
+    });
+
+    players = newPlayers;
+    roundsHistory = newHistory;
+
+    localStorage.setItem('gamePlayers', JSON.stringify(players));
+    localStorage.setItem('gameScores', JSON.stringify(roundsHistory));
+
+    renderInputForm();
+    renderHistoryHeader();
+    updateResults();
+    updateHistoryTable();
+    alert("Đã cập nhật tên người chơi!");
+}
+
 function switchTab(tabId, btnElement) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -56,6 +98,7 @@ function switchTab(tabId, btnElement) {
         const tabBtns = document.querySelectorAll('.tab-btn');
         if (tabId === 'result-page') tabBtns[1].classList.add('active');
         if (tabId === 'history-page') tabBtns[2].classList.add('active');
+        if (tabId === 'settings-page') tabBtns[3].classList.add('active');
     }
 
     if (tabId === 'result-page') updateResults();
@@ -93,7 +136,10 @@ function submitRound() {
 function clearAllData() {
     if (confirm("Bạn có chắc chắn muốn xóa tất cả lịch sử và điểm số không?")) {
         localStorage.removeItem('gameScores');
+        localStorage.removeItem('gamePlayers');
         roundsHistory = [];
+        players = ["Thắng", "Thùy", "Hiệp", "Kiên", "Hồng"];
+        renderSettingsForm();
         renderInputForm();
         updateResults();
         updateHistoryTable();
@@ -102,23 +148,32 @@ function clearAllData() {
     }
 }
 
-function updateResults() {
+function updateResults(sortOrder = 'none') {
     let totals = {};
     players.forEach(p => totals[p] = 0);
     roundsHistory.forEach(round => {
         players.forEach(p => totals[p] += round[p]);
     });
 
+    let resultsArray = players.map(p => ({ name: p, score: totals[p] }));
+
+    if (sortOrder === 'asc') {
+        resultsArray.sort((a, b) => a.score - b.score);
+    } else if (sortOrder === 'desc') {
+        resultsArray.sort((a, b) => b.score - a.score);
+    }
+
     const container = document.getElementById("result-list");
     if (!container) return;
     container.innerHTML = "";
-    players.forEach(player => {
+    
+    resultsArray.forEach(item => {
         const div = document.createElement("div");
         div.className = "result-item";
         let scoreColor = "#2d3748";
-        if (totals[player] > 0) scoreColor = "#38a169";
-        if (totals[player] < 0) scoreColor = "#e53e3e";
-        div.innerHTML = `<span>${player}</span> <span style="color: ${scoreColor}">${totals[player] > 0 ? '+' : ''}${totals[player]}</span>`;
+        if (item.score > 0) scoreColor = "#38a169";
+        if (item.score < 0) scoreColor = "#e53e3e";
+        div.innerHTML = `<span>${item.name}</span> <span style="color: ${scoreColor}">${item.score > 0 ? '+' : ''}${item.score}</span>`;
         container.appendChild(div);
     });
 }
@@ -127,54 +182,21 @@ function updateHistoryTable() {
     const tbody = document.getElementById("history-body");
     if (!tbody) return;
     tbody.innerHTML = "";
-    
-    let totals = {};
-    players.forEach(p => totals[p] = 0);
-
     roundsHistory.forEach((round, index) => {
         const tr = document.createElement("tr");
         let tdRound = document.createElement("td");
         tdRound.innerText = index + 1;
-        tdRound.style.color = "#4a5568";
         tr.appendChild(tdRound);
-        
         players.forEach(player => {
             let td = document.createElement("td");
             const score = round[player];
-            totals[player] += score;
-            
             td.innerText = score > 0 ? `+${score}` : score;
             if (score > 0) td.style.color = "#38a169";
             if (score < 0) td.style.color = "#e53e3e";
-            if (score === 0) td.style.color = "#a0aec0";
             tr.appendChild(td);
         });
-        
         tbody.appendChild(tr);
     });
-
-    if (roundsHistory.length > 0) {
-        const trTotal = document.createElement("tr");
-        trTotal.style.backgroundColor = "#edf2f7";
-        trTotal.style.fontWeight = "bold";
-
-        let tdLabel = document.createElement("td");
-        tdLabel.innerText = "Tổng";
-        tdLabel.style.color = "#2d3748";
-        trTotal.appendChild(tdLabel);
-
-        players.forEach(player => {
-            let td = document.createElement("td");
-            const totalScore = totals[player];
-            td.innerText = totalScore > 0 ? `+${totalScore}` : totalScore;
-            if (totalScore > 0) td.style.color = "#38a169";
-            if (totalScore < 0) td.style.color = "#e53e3e";
-            if (totalScore === 0) td.style.color = "#2d3748";
-            trTotal.appendChild(td);
-        });
-        
-        tbody.appendChild(trTotal);
-    }
 }
 
 window.onload = init;
