@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tính Điểm Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('input-page', this)">Nhập Điểm</button>
+        <button class="tab-btn" onclick="switchTab('result-page', this)">Kết Quả</button>
+        <button class="tab-btn" onclick="switchTab('history-page', this)">Lịch Sử</button>
+    </div>
+
+    <div id="input-page" class="page active">
+        <h2>Vòng <span id="round-number">1</span></h2>
+        <div id="input-form"></div>
+        <button class="btn-submit" onclick="submitRound()">Lưu Điểm</button>
+        <p id="error-msg"></p>
+        <button class="btn-goto" onclick="switchTab('result-page', null)">Xem Kết Quả</button>
+    </div>
+
+    <div id="result-page" class="page">
+        <h2>Tổng Điểm</h2>
+        <div id="result-list"></div>
+    </div>
+
+    <div id="history-page" class="page">
+        <h2>Lịch Sử</h2>
+        <div class="table-container">
+            <table id="history-table">
+                <thead>
+                    <tr id="history-header">
+                        <th>Vòng</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body"></tbody>
+            </table>
+        </div>
+        <button class="btn-clear" onclick="clearAllData()">Xóa Toàn Bộ Dữ Liệu</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
