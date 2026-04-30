@@ -127,21 +127,54 @@ function updateHistoryTable() {
     const tbody = document.getElementById("history-body");
     if (!tbody) return;
     tbody.innerHTML = "";
+    
+    let totals = {};
+    players.forEach(p => totals[p] = 0);
+
     roundsHistory.forEach((round, index) => {
         const tr = document.createElement("tr");
         let tdRound = document.createElement("td");
         tdRound.innerText = index + 1;
+        tdRound.style.color = "#4a5568";
         tr.appendChild(tdRound);
+        
         players.forEach(player => {
             let td = document.createElement("td");
             const score = round[player];
+            totals[player] += score;
+            
             td.innerText = score > 0 ? `+${score}` : score;
             if (score > 0) td.style.color = "#38a169";
             if (score < 0) td.style.color = "#e53e3e";
+            if (score === 0) td.style.color = "#a0aec0";
             tr.appendChild(td);
         });
+        
         tbody.appendChild(tr);
     });
+
+    if (roundsHistory.length > 0) {
+        const trTotal = document.createElement("tr");
+        trTotal.style.backgroundColor = "#edf2f7";
+        trTotal.style.fontWeight = "bold";
+
+        let tdLabel = document.createElement("td");
+        tdLabel.innerText = "Tổng";
+        tdLabel.style.color = "#2d3748";
+        trTotal.appendChild(tdLabel);
+
+        players.forEach(player => {
+            let td = document.createElement("td");
+            const totalScore = totals[player];
+            td.innerText = totalScore > 0 ? `+${totalScore}` : totalScore;
+            if (totalScore > 0) td.style.color = "#38a169";
+            if (totalScore < 0) td.style.color = "#e53e3e";
+            if (totalScore === 0) td.style.color = "#2d3748";
+            trTotal.appendChild(td);
+        });
+        
+        tbody.appendChild(trTotal);
+    }
 }
 
 window.onload = init;
